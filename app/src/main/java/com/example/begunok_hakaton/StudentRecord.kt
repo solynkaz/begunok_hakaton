@@ -71,7 +71,7 @@ fun AcademicRecord(
             fontWeight = FontWeight(500)
         )
         if (yearOfStudy != null) Text(
-            "Год: $yearOfStudy",
+            "Год: $yearOfStudy - ${yearOfStudy.toInt() + 1}",
             Modifier.padding(start = 25.dp, bottom = 25.dp),
             fontSize = 18.sp,
             color = Color(0x80000000)
@@ -84,19 +84,24 @@ fun AcademicRecord(
             for (i in 0..10) {
                 item {
                     lessonCard(
+                        cardType = 1,
                         lessonName = "Лекция $i",
                         lessonDate = "25.01.2022",
-                        controlTask = controlTask(
-                            theme = "Практика${1}",
-                            maxPoint = "${i + 10}",
-                            currentPoint = "$i",
-                            isQuestIssued = i % 2 == 0
-                        ),
                         presence = i % 2 == 0,
                         lessonTheme = "Основы алгоритмизации:$i",
                         teacherName = "Жамбалов Э.Б.",
                     )
                 }
+            }
+            item {
+                lessonCard(
+                    cardType = 2,
+                    lessonName = "Аттестация",
+                    lessonDate = "25.12.2022",
+                    presence = true,
+                    teacherName = "Жамбалов Э.Б.",
+                    lessonTheme = null,
+                )
             }
         }
     }
@@ -105,9 +110,9 @@ fun AcademicRecord(
 
 @Composable
 fun lessonCard(
+    cardType: Int,
     lessonName: String?,
     lessonDate: String?,
-    controlTask: controlTask,
     presence: Boolean?,
     lessonTheme: String?,
     teacherName: String?,
@@ -115,96 +120,253 @@ fun lessonCard(
     val fontTitle = 20.sp
     val fontSubTitle = 18.sp
     val weightSubTitle = FontWeight(400)
-    val modifierTitle = Modifier.padding(top = 5.dp,start = 5.dp, bottom = 8.dp)
-
-    Column(
-        Modifier
-            .fillMaxSize()
-            .padding(bottom = 7.dp)) {
-        Card(
-            modifier = Modifier.padding(horizontal = 7.dp),
-            border = BorderStroke(0.dp, Color.Transparent),
-            elevation = 1.dp
-        ) {
-            Row() {
-
-                    if (lessonName != null) {
-                        Text(
-                            text = lessonName,
-                            fontSize = fontTitle,
-                            fontWeight = weightSubTitle,
-                            modifier = modifierTitle
-                        )
-                    }
-                    Text(
-                        "Посещение:",
-                        fontSize = fontSubTitle,
-                        fontWeight = weightSubTitle,
-                        modifier = modifierTitle
-
-                    )
-                    Text(
-                        "Тема занятия:",
-                        fontSize = fontSubTitle,
-                        fontWeight = weightSubTitle,
-                        modifier = Modifier.padding(start = 5.dp)
-                    )
-                    if (lessonTheme != null) Text(
-                        lessonTheme,
-                        modifier = Modifier.padding(start = 5.dp, bottom = 8.dp),
-                        color = Color(0xA6000000),
-                        fontSize = 16.sp,
-                        fontWeight = weightSubTitle
-                    )
-                    if (teacherName != null){
-                        Text(
-                            text = "Преподаватель:",
-                            fontSize = fontSubTitle,
-                            fontWeight = weightSubTitle,
-                            modifier = modifierTitle
-                        )
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 5.dp)
+    val modifierTitle = Modifier.padding(top = 7.dp, start = 5.dp)
+    when (cardType) {
+        1 -> {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 7.dp)
+            ) {
+                Card(
+                    modifier = Modifier.padding(horizontal = 7.dp),
+                    border = BorderStroke(0.dp, Color.Transparent),
+                    elevation = 1.dp
                 ) {
-                    if (lessonDate != null) {
-                        Text(
-                            text = lessonDate,
-                            color = Color(0xA6000000),
-                            fontSize = fontSubTitle,
-                            fontWeight = weightSubTitle,
-                            modifier = modifierTitle
-                        )
-                    }
-                    if (presence != null) {
-                        if (presence) {
-                            Text(
-                                "+",
-                                fontSize = fontSubTitle,
-                                fontWeight = weightSubTitle,
-                                modifier = modifierTitle,
-                                color = Color(0xFF5ACC00)
-                            )
-                        } else {
-                            Text(
-                                "-",
-                                fontSize = fontSubTitle,
-                                fontWeight = weightSubTitle,
-                                modifier = modifierTitle,
-                                color = Color(0xFFCC0000)
-                            )
+                    Column(
+                        modifier = Modifier
+                            .weight(2f)
+                            .padding(start = 7.dp, end = 7.dp),
+                    ) {
+                        Row(Modifier.fillMaxWidth()) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(1f)
+                                    .weight(1f)
+                            ) {
+                                if (lessonName != null) {
+                                    Text(
+                                        text = lessonName,
+                                        fontSize = fontTitle,
+                                        fontWeight = weightSubTitle,
+                                        modifier = modifierTitle.align(Alignment.CenterStart)
+                                    )
+                                }
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            ) {
+                                if (lessonDate != null) {
+                                    Text(
+                                        text = lessonDate,
+                                        color = Color(0xA6000000),
+                                        fontSize = fontSubTitle,
+                                        fontWeight = weightSubTitle,
+                                        modifier = modifierTitle
+                                            .padding(top = 0.dp)
+                                            .align(Alignment.CenterEnd)
+                                    )
+                                }
+                            }
+                        }
+                        Row() {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            ) {
+                                Text(
+                                    "Посещение",
+                                    fontSize = fontSubTitle,
+                                    fontWeight = weightSubTitle,
+                                    modifier = modifierTitle
+                                        .padding(top = 4.dp)
+                                        .align(Alignment.CenterStart)
+                                )
+                            }
+                            if (presence != null) {
+                                if (presence) {
+                                    Text(
+                                        "+",
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight(450),
+                                        modifier = modifierTitle.padding(end = 10.dp),
+                                        color = Color(0xFF5ACC00)
+                                    )
+                                } else {
+                                    Text(
+                                        "-",
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight(450),
+                                        modifier = modifierTitle.padding(end = 10.dp),
+                                        color = Color(0xFFCC0000)
+                                    )
+                                }
+                            }
+                        }
+                        Row(Modifier.padding(top = 7.dp)) {
+                            Column() {
+                                Text(
+                                    "Тема занятия",
+                                    fontSize = fontSubTitle,
+                                    fontWeight = weightSubTitle,
+                                    modifier = Modifier.padding(start = 5.dp)
+                                )
+                                if (lessonTheme != null) Text(
+                                    lessonTheme,
+                                    modifier = Modifier.padding(start = 5.dp, bottom = 8.dp),
+                                    color = Color(0xA6000000),
+                                    fontSize = 12.sp,
+                                    fontWeight = weightSubTitle
+                                )
+                            }
+                        }
+                        Row(Modifier.padding(bottom = 7.dp)) {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)) {
+                                if (teacherName != null) {
+                                    Text(
+                                        text = "Преподаватель",
+                                        fontSize = fontSubTitle,
+                                        fontWeight = weightSubTitle,
+                                        modifier = modifierTitle
+                                    )
+                                }
+                            }
+                            if (teacherName != null) {
+                                Text(
+                                    text = teacherName,
+                                    fontSize = fontSubTitle,
+                                    fontWeight = weightSubTitle,
+                                    modifier = modifierTitle.padding(bottom = 10.dp)
+                                )
+                            }
                         }
                     }
-                    if (teacherName != null) {
-                        Text(
-                            text = teacherName,
-                            fontSize = fontSubTitle,
-                            fontWeight = weightSubTitle,
-                            modifier = modifierTitle
-                        )
+                }
+            }
+        }
+        2 -> {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 7.dp)
+            ) {
+                Card(
+                    modifier = Modifier.padding(horizontal = 7.dp),
+                    border = BorderStroke(0.dp, Color.Transparent),
+                    elevation = 1.dp
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(2f)
+                            .padding(start = 7.dp, end = 7.dp),
+                    ) {
+                        Row(Modifier.fillMaxWidth()) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(1f)
+                                    .weight(1f)
+                            ) {
+                                if (lessonName != null) {
+                                    Text(
+                                        text = lessonName,
+                                        fontSize = fontTitle,
+                                        fontWeight = weightSubTitle,
+                                        modifier = modifierTitle.align(Alignment.CenterStart)
+                                    )
+                                }
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            ) {
+                                if (lessonDate != null) {
+                                    Text(
+                                        text = lessonDate,
+                                        color = Color(0xA6000000),
+                                        fontSize = fontSubTitle,
+                                        fontWeight = weightSubTitle,
+                                        modifier = modifierTitle
+                                            .padding(top = 0.dp)
+                                            .align(Alignment.CenterEnd)
+                                    )
+                                }
+                            }
+                        }
+                        Row() {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            ) {
+                                Text(
+                                    "Посещение",
+                                    fontSize = fontSubTitle,
+                                    fontWeight = weightSubTitle,
+                                    modifier = modifierTitle
+                                        .padding(top = 4.dp)
+                                        .align(Alignment.CenterStart)
+                                )
+                            }
+                            if (presence != null) {
+                                if (presence) {
+                                    Text(
+                                        "+",
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight(450),
+                                        modifier = modifierTitle.padding(end = 10.dp),
+                                        color = Color(0xFF5ACC00)
+                                    )
+                                } else {
+                                    Text(
+                                        "-",
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight(450),
+                                        modifier = modifierTitle.padding(end = 10.dp),
+                                        color = Color(0xFFCC0000)
+                                    )
+                                }
+                            }
+                        }
+                        Row(Modifier.padding(top = 7.dp)) {
+                            Text(
+                                "Экзамен (МБ:48) - 0.0",
+                                fontSize = fontSubTitle,
+                                fontWeight = weightSubTitle,
+                                modifier = Modifier.padding(start = 5.dp)
+                            )
+                        }
+                        Row(Modifier.padding(top = 7.dp)) {
+                        }
+                        Row(Modifier.padding(bottom = 7.dp)) {
+                            Box(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)) {
+                                if (teacherName != null) {
+                                    Text(
+                                        text = "Преподаватель",
+                                        fontSize = fontSubTitle,
+                                        fontWeight = weightSubTitle,
+                                        modifier = modifierTitle.align(Alignment.CenterStart)
+                                    )
+                                }
+                            }
+                            if (teacherName != null) {
+                                Text(
+                                    text = teacherName,
+                                    fontSize = fontSubTitle,
+                                    fontWeight = weightSubTitle,
+                                    modifier = modifierTitle
+                                )
+                            }
+                        }
                     }
                 }
             }
