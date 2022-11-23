@@ -5,80 +5,96 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.DrawModifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-            Box() {
-                    Image(
-                        painterResource(id = R.drawable.pattern),
-                        contentDescription = "",
-                        modifier = Modifier.matchParentSize(),
-                        alignment = Alignment.BottomEnd,
-                        alpha = 0.2f
-                    )
-                    AcademicRecord("Основы программной инженерии")
+            val systemUiController = rememberSystemUiController()
+            systemUiController.setSystemBarsColor(
+                color = Color.Transparent
+            )
+            Row(
+                Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painterResource(id = R.drawable.group_174asd),
+                    contentDescription = "",
+                    alignment = Alignment.Center,
+                    alpha = 0.4f
+                )
             }
+            AcademicRecord("Основы программной инженерии", "Программирование", "2022")
         }
     }
 }
 
 @Composable
-fun AcademicRecord(pageDescription: String) {
+fun AcademicRecord(
+    pageDescription: String, lessonName: String?, yearOfStudy: String?,
+) {
     Column() {
-        TopAppBar {
+        TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { }) {
                 Icon(Icons.Filled.Menu, contentDescription = pageDescription)
             }
-            Text("Программирование", fontSize = 22.sp)
-            IconButton(onClick = { }) {
-                Icon(Icons.Filled.Info, contentDescription = "Информация о приложении")
-            }
-            IconButton(onClick = { }) {
-                Icon(Icons.Filled.Search, contentDescription = "Поиск")
-            }
+            Text("", fontSize = 22.sp)
         }
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        Text(
+            "$lessonName",
+            modifier = Modifier.padding(start = 15.dp),
+            fontSize = 36.sp,
+            fontWeight = FontWeight(500)
+        )
+        if (yearOfStudy != null) Text(
+            "Год: $yearOfStudy",
+            Modifier.padding(start = 25.dp, bottom = 25.dp),
+            fontSize = 18.sp,
+            color = Color(0x80000000)
+        )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 5.dp)
+        ) {
             for (i in 0..10) {
                 item {
                     lessonCard(
-                        lessonName = "Lesson$i",
-                        date = "date$i",
+                        lessonName = "Лекция $i",
+                        lessonDate = "25.01.2022",
                         controlTask = controlTask(
-                            theme = "Control Task Theme $i",
+                            theme = "Практика${1}",
                             maxPoint = "${i + 10}",
                             currentPoint = "$i",
                             isQuestIssued = i % 2 == 0
                         ),
                         presence = i % 2 == 0,
-                        lessonTheme = "LessonTheme$i",
-                        teacherName = "TeacherName$i"
+                        lessonTheme = "Основы алгоритмизации:$i",
+                        teacherName = "Жамбалов Э.Б.",
                     )
                 }
             }
@@ -90,151 +106,109 @@ fun AcademicRecord(pageDescription: String) {
 @Composable
 fun lessonCard(
     lessonName: String?,
-    date: String?,
+    lessonDate: String?,
     controlTask: controlTask,
     presence: Boolean?,
     lessonTheme: String?,
-    teacherName: String?
+    teacherName: String?,
 ) {
-    val lessonNameWeight = FontWeight(380)
-    val lessonNameModifier = Modifier.padding(top = 3.dp, bottom = 3.dp)
+    val fontTitle = 20.sp
+    val fontSubTitle = 18.sp
+    val weightSubTitle = FontWeight(400)
+    val modifierTitle = Modifier.padding(top = 5.dp,start = 5.dp, bottom = 8.dp)
 
-    val dataTextWeight = FontWeight(380)
-    val dataTextModifier = Modifier.padding(start = 5.dp, bottom = 4.dp)
-    val dataSecondTextModifier = dataTextModifier.padding(start = 0.dp, end = 5.dp)
-
-
-    Column() {
-        Row() {
-            Card(
-                elevation = 0.dp,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 5.dp),
-                backgroundColor = Color(0x26007D8A),
-                shape = RoundedCornerShape(topEnd = 10.dp),
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    if (lessonName != null) Text(
-                        text = lessonName,
-                        fontSize = 20.sp,
-                        fontWeight = lessonNameWeight,
-                        modifier = lessonNameModifier,
-                    )
-                    else Text("Название занятия не назначено")
-                }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.weight(1f))
-        }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(bottom = 7.dp)) {
         Card(
-            elevation = 0.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp),
-            shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp),
-            backgroundColor = Color(0xBFF6D5C9)
+            modifier = Modifier.padding(horizontal = 7.dp),
+            border = BorderStroke(0.dp, Color.Transparent),
+            elevation = 1.dp
         ) {
-            Row(Modifier.padding(vertical = 5.dp)) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                ) {
-                    if (date != null) Text(
-                        "Дата:",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier
-                    )
-                    else Text(
-                        "Дата не назначена",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier
-                    )
-                    Text("Посещение:", fontWeight = dataTextWeight, modifier = dataTextModifier)
-                    if (lessonTheme != null) Text(
-                        text = "Тема занятия: ",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier,
-                        textAlign = TextAlign.Right
-                    )
-                    else Text(
-                        "Тема не назначена",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier
-                    )
+            Row() {
 
-                    if (teacherName != null) Text(
-                        "Преподаватель: ",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier
-                    )
-                    else Text(
-                        "Преподаватель не назначен",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier
-                    )
+                    if (lessonName != null) {
+                        Text(
+                            text = lessonName,
+                            fontSize = fontTitle,
+                            fontWeight = weightSubTitle,
+                            modifier = modifierTitle
+                        )
+                    }
+                    Text(
+                        "Посещение:",
+                        fontSize = fontSubTitle,
+                        fontWeight = weightSubTitle,
+                        modifier = modifierTitle
 
-                    if (controlTask.isQuestIssued) Text(
-                        "Контрольное испытание:",
-                        fontWeight = dataTextWeight,
-                        modifier = dataTextModifier
                     )
-                }
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f)
-                ) {
-                    if (date != null) Text(
-                        date,
-                        fontWeight = dataTextWeight,
-                        modifier = dataSecondTextModifier
+                    Text(
+                        "Тема занятия:",
+                        fontSize = fontSubTitle,
+                        fontWeight = weightSubTitle,
+                        modifier = Modifier.padding(start = 5.dp)
                     )
-                    else Text("", fontWeight = dataTextWeight, modifier = dataSecondTextModifier)
-
-                    if (presence == null) Text(
-                        "",
-                        fontWeight = dataTextWeight,
-                        modifier = dataSecondTextModifier
-                    )
-                    else if (!presence) Text(
-                        "Отсутствовал",
-                        fontWeight = dataTextWeight,
-                        modifier = dataSecondTextModifier
-                    )
-                    else Text(
-                        "Присутствовал",
-                        fontWeight = dataTextWeight,
-                        modifier = dataSecondTextModifier
-                    )
-
                     if (lessonTheme != null) Text(
                         lessonTheme,
-                        fontWeight = dataTextWeight,
-                        modifier = dataSecondTextModifier
+                        modifier = Modifier.padding(start = 5.dp, bottom = 8.dp),
+                        color = Color(0xA6000000),
+                        fontSize = 16.sp,
+                        fontWeight = weightSubTitle
                     )
-                    else Text("", fontWeight = dataTextWeight, modifier = dataSecondTextModifier)
-
-                    if (teacherName != null) Text(
-                        teacherName,
-                        fontWeight = dataTextWeight,
-                        modifier = dataSecondTextModifier
-                    )
-                    else Text("", fontWeight = dataTextWeight, modifier = dataSecondTextModifier)
-
-                    if (controlTask.isQuestIssued) {
+                    if (teacherName != null){
                         Text(
-                            "${controlTask.theme}\n(МБ:${controlTask.maxPoint}) - ${controlTask.currentPoint}",
-                            fontWeight = dataTextWeight,
-                            modifier = dataSecondTextModifier
+                            text = "Преподаватель:",
+                            fontSize = fontSubTitle,
+                            fontWeight = weightSubTitle,
+                            modifier = modifierTitle
+                        )
+                    }
+                }
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 5.dp)
+                ) {
+                    if (lessonDate != null) {
+                        Text(
+                            text = lessonDate,
+                            color = Color(0xA6000000),
+                            fontSize = fontSubTitle,
+                            fontWeight = weightSubTitle,
+                            modifier = modifierTitle
+                        )
+                    }
+                    if (presence != null) {
+                        if (presence) {
+                            Text(
+                                "+",
+                                fontSize = fontSubTitle,
+                                fontWeight = weightSubTitle,
+                                modifier = modifierTitle,
+                                color = Color(0xFF5ACC00)
+                            )
+                        } else {
+                            Text(
+                                "-",
+                                fontSize = fontSubTitle,
+                                fontWeight = weightSubTitle,
+                                modifier = modifierTitle,
+                                color = Color(0xFFCC0000)
+                            )
+                        }
+                    }
+                    if (teacherName != null) {
+                        Text(
+                            text = teacherName,
+                            fontSize = fontSubTitle,
+                            fontWeight = weightSubTitle,
+                            modifier = modifierTitle
                         )
                     }
                 }
             }
         }
-
     }
 }
 
