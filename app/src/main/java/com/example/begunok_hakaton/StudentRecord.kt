@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.DrawModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,8 +34,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column() {
-                AcademicRecord("Основы программной инженерии")
+
+            Box() {
+                    Image(
+                        painterResource(id = R.drawable.pattern),
+                        contentDescription = "",
+                        modifier = Modifier.matchParentSize(),
+                        alignment = Alignment.BottomEnd,
+                        alpha = 0.2f
+                    )
+                    AcademicRecord("Основы программной инженерии")
             }
         }
     }
@@ -40,7 +51,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AcademicRecord(pageDescription: String) {
-
     Column() {
         TopAppBar {
             IconButton(onClick = { }) {
@@ -86,22 +96,25 @@ fun lessonCard(
     lessonTheme: String?,
     teacherName: String?
 ) {
-    val lessonNameWeight = FontWeight(450)
+    val lessonNameWeight = FontWeight(380)
     val lessonNameModifier = Modifier.padding(top = 3.dp, bottom = 3.dp)
-    val dataTextWeight = FontWeight(400)
+
+    val dataTextWeight = FontWeight(380)
     val dataTextModifier = Modifier.padding(start = 5.dp, bottom = 4.dp)
     val dataSecondTextModifier = dataTextModifier.padding(start = 0.dp, end = 5.dp)
+
 
     Column() {
         Row() {
             Card(
+                elevation = 0.dp,
                 modifier = Modifier
                     .weight(1f)
                     .padding(top = 5.dp),
                 backgroundColor = Color(0x26007D8A),
                 shape = RoundedCornerShape(topEnd = 10.dp),
             ) {
-                Box(contentAlignment = Alignment.CenterStart) {
+                Box(contentAlignment = Alignment.Center) {
                     if (lessonName != null) Text(
                         text = lessonName,
                         fontSize = 20.sp,
@@ -115,6 +128,7 @@ fun lessonCard(
             Spacer(modifier = Modifier.weight(1f))
         }
         Card(
+            elevation = 0.dp,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 10.dp),
@@ -139,7 +153,7 @@ fun lessonCard(
                     )
                     Text("Посещение:", fontWeight = dataTextWeight, modifier = dataTextModifier)
                     if (lessonTheme != null) Text(
-                        "Тема занятия: ",
+                        text = "Тема занятия: ",
                         fontWeight = dataTextWeight,
                         modifier = dataTextModifier,
                         textAlign = TextAlign.Right
@@ -220,6 +234,7 @@ fun lessonCard(
                 }
             }
         }
+
     }
 }
 
