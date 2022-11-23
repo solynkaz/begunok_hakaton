@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Column() {
+            Column {
                 TopAppBar {
                     IconButton(onClick = { }) {
                         Icon(Icons.Filled.Menu, contentDescription = "Меню")
@@ -40,7 +40,8 @@ class MainActivity : ComponentActivity() {
                         Icon(Icons.Filled.Search, contentDescription = "Поиск")
                     }
                 }
-                AcademicRecord()
+                //AcademicRecord()
+                TeacherRecord()
             }
         }
     }
