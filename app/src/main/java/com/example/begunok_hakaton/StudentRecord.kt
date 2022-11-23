@@ -126,12 +126,13 @@ fun lessonCard(
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(bottom = 7.dp)
+                    .padding(bottom = 10.dp)
             ) {
                 Card(
                     modifier = Modifier.padding(horizontal = 7.dp),
-                    border = BorderStroke(0.dp, Color.Transparent),
-                    elevation = 1.dp
+                    border = BorderStroke((0.15).dp, Color(0x80000000)),
+                    backgroundColor = Color(0xCCFFFFFF),
+                    elevation = 0.dp
                 ) {
                     Column(
                         modifier = Modifier
@@ -227,7 +228,8 @@ fun lessonCard(
                             Box(
                                 Modifier
                                     .fillMaxWidth()
-                                    .weight(1f)) {
+                                    .weight(1f)
+                            ) {
                                 if (teacherName != null) {
                                     Text(
                                         text = "Преподаватель",
@@ -258,8 +260,9 @@ fun lessonCard(
             ) {
                 Card(
                     modifier = Modifier.padding(horizontal = 7.dp),
-                    border = BorderStroke(0.dp, Color.Transparent),
-                    elevation = 1.dp
+                    border = BorderStroke((0.15).dp, Color(0x80000000)),
+                    elevation = 0.dp,
+                    backgroundColor = Color(0xCCFFFFFF),
                 ) {
                     Column(
                         modifier = Modifier
