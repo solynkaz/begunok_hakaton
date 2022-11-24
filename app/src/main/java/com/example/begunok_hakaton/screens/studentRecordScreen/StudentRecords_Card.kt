@@ -1,6 +1,5 @@
 package com.example.begunok_hakaton.screens
 
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -342,9 +341,12 @@ fun lessonCard(
                                     .weight(1f)
                             ) {
                                 Text(
-                                    text = if (currentBall!!.toInt() > 0) "Аттестован"
-                                    else "Не аттестован",
-                                    fontSize = fontSubTitle,
+                                    text = if ((group.students[1].active_arrears != null) && group.students[1].active_arrears!![0].arrearSended) "Заявка отправлена"
+                                            else if ((group.students[1].active_arrears != null) && group.students[1].active_arrears!![0] != null) "Не аттестован"
+                                            else "Аттестован",
+                                            //text = if (currentBall!!.toInt() > 0) "Аттестован"
+                                            //else "Не аттестован",
+                                            fontSize = fontSubTitle,
                                     fontWeight = weightSubTitle,
                                     modifier = Modifier
                                         .padding(start = 5.dp)

@@ -2,15 +2,10 @@ package com.example.begunok_hakaton
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,13 +14,12 @@ import com.example.begunok_hakaton.dataclasses.StudentDataClasses.Student
 import com.example.begunok_hakaton.screens.StudentRecord
 import com.example.begunok_hakaton.screens.TeacherRecord
 import com.example.begunok_hakaton.screens.mainMenu.mainMenu
-
+import com.example.begunok_hakaton.screens.testScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.gson.Gson
-import org.json.JSONObject
-import java.io.File
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var studentForTeacherJournal: Student? = null
@@ -35,6 +29,7 @@ class MainActivity : ComponentActivity() {
             this.getSharedPreferences("prefs", MODE_PRIVATE)
         pref.edit().putString("data", json).apply()
         setContent {
+
             val fileName = "data.txt"
             val group: Group = Gson().fromJson(pref.getString("data", ""), Group::class.java)
             val students: ArrayList<Student> = group.students
@@ -44,6 +39,12 @@ class MainActivity : ComponentActivity() {
             )
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "MainMenu") {
+
+                composable("test") {
+                    testScreen()
+                    BackHandler(true) {
+                    }
+                }
                 composable("MainMenu") {
                     mainMenu(
                         onNavToTeacher = {
@@ -52,6 +53,8 @@ class MainActivity : ComponentActivity() {
                         onNavToStudent = {
                             navController.navigate("studentRecords")
                         })
+                    BackHandler(true) {
+                    }
                 }
                 composable("teacherRecords") {
                     TeacherRecord(
@@ -61,16 +64,22 @@ class MainActivity : ComponentActivity() {
                         }, pref = pref, NavOnBack = {
                             navController.navigate("MainMenu")
                         })
+                    BackHandler(true) {
+                    }
                 }
                 composable("studentRecords") {
                     StudentRecord(students[1], pref, NavOnBack = {
                         navController.navigate("MainMenu")
                     })
+                    BackHandler(true) {
+                    }
                 }
                 composable("teacherJournalCard") {
                     RunnerScreen(studentForTeacherJournal!!, pref, NavOnBack = {
                         navController.navigate("teacherRecords")
                     })
+                    BackHandler(true) {
+                    }
                 }
             }
             //#region picture

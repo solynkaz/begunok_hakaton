@@ -1,8 +1,5 @@
 package com.example.begunok_hakaton.dataclasses.StudentDataClasses
 
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-
 data class Arrear(
     val idLesson: Int,
     val arrearDate: String,
