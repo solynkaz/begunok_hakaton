@@ -39,10 +39,10 @@ class MainActivity : ComponentActivity() {
             )
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "MainMenu") {
-
                 composable("test") {
                     testScreen()
                     BackHandler(true) {
+
                     }
                 }
                 composable("MainMenu") {
@@ -65,6 +65,7 @@ class MainActivity : ComponentActivity() {
                             navController.navigate("MainMenu")
                         })
                     BackHandler(true) {
+                        navController.navigate("MainMenu")
                     }
                 }
                 composable("studentRecords") {
@@ -72,6 +73,8 @@ class MainActivity : ComponentActivity() {
                         navController.navigate("MainMenu")
                     })
                     BackHandler(true) {
+                        navController.navigate("MainMenu")
+
                     }
                 }
                 composable("teacherJournalCard") {
@@ -79,6 +82,7 @@ class MainActivity : ComponentActivity() {
                         navController.navigate("teacherRecords")
                     })
                     BackHandler(true) {
+                        navController.navigate("teacherRecords")
                     }
                 }
             }

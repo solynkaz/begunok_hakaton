@@ -321,11 +321,17 @@ fun lessonCard(
                         }
                         Row(Modifier.padding(top = 7.dp)) {
                             Text(
-                                "Экзамен (МБ:72) - $currentBall",
+                                "Экзамен (МБ:72)",
                                 fontSize = fontSubTitle,
                                 fontWeight = weightSubTitle,
                                 modifier = Modifier.padding(start = 5.dp)
                             )
+                            Box(Modifier.fillMaxWidth()) {
+                                Text("$currentBall",
+                                    fontSize = fontSubTitle,
+                                    fontWeight = weightSubTitle,
+                                    modifier = Modifier.padding(end = 10.dp).align(Alignment.CenterEnd))
+                            }
                         }
                         Row(Modifier.padding(top = 7.dp)) {
 
