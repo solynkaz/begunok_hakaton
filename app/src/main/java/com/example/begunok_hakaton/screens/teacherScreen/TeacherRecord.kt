@@ -1,12 +1,15 @@
 package com.example.begunok_hakaton.screens
 
 
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
@@ -21,14 +24,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.begunok_hakaton.R
 import com.example.begunok_hakaton.dataclasses.GroupDataClasses.Group
+import com.example.begunok_hakaton.dataclasses.StudentDataClasses.Student
+import com.google.gson.Gson
 
 
 @Composable
-fun TeacherRecord(group: Group) {
+fun TeacherRecord(group1: Group, onNavToCard: (student: Student) -> Unit, pref: SharedPreferences,
+NavOnBack: () -> Unit) {
+    val group: Group = Gson().fromJson(pref.getString("data",""), Group::class.java)
+    Row(
+        Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = CenterVertically
+    ) {
+        Image(
+            painterResource(id = R.drawable.group_174asd),
+            contentDescription = "",
+            alignment = Alignment.Center,
+            alpha = 0.4f
+        )
+    }
     Column() {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { }) {
-                Icon(Icons.Filled.Menu, contentDescription = "")
+                Icon(Icons.Filled.ArrowBack, contentDescription = "", modifier = Modifier.clickable {
+                    NavOnBack()
+                })
             }
             Text("", fontSize = 22.sp)
         }
@@ -48,7 +69,7 @@ fun TeacherRecord(group: Group) {
 
         )
 
-        var text by remember { mutableStateOf("24.12.2021") }
+        var text by remember { mutableStateOf("20.12.2022") }
         val trailingIconView = @Composable {
             IconButton(
                 onClick = {
@@ -97,7 +118,8 @@ fun TeacherRecord(group: Group) {
             Column(
                 Modifier
                     .weight(0.245f)
-                    .padding(start = 10.dp)) {
+                    .padding(start = 10.dp)
+            ) {
                 //icon
                 Image(
                     painterResource(id = R.drawable.group),
@@ -107,7 +129,7 @@ fun TeacherRecord(group: Group) {
                 )
             }
             Column(Modifier.weight(0.85f)) {
-                Log.d("TeacherRecord",group.toString())
+                Log.d("TeacherRecord", group.toString())
                 Text(
                     text = group.groupName,
                     fontSize = 20.sp,
@@ -129,13 +151,23 @@ fun TeacherRecord(group: Group) {
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             for (student in group.students) {
-            for (i in 0..10) {
+                val studentName = student.fio.split(" ")
+                val group: Group = Gson().fromJson(pref.getString("data", ""), Group::class.java)
+                val status: Int = if (student.active_arrears == null) {
+                    1
+                } else if ((group.students[1].active_arrears != null) && !group.students[1].active_arrears!![0].arrearSended) {
+                    2
+                } else {
+                    3
+                }
                 item {
                     studentCard(
-                        studentFio = "Фамилия Имя \nОтчество $i",
-                        studentPoints = "00.00",
+                        student = student,
+                        studentFio = "${studentName[0]} ${studentName[1]}\n${studentName[2]}",
+                        studentPoints = student.lessons[3].currentBall.toString(),
                         maxPoints = "72.00",
-                        studentStatus = (1..3).random()
+                        studentStatus = status,
+                        onNavToCard = onNavToCard
                     )
                 }
             }
@@ -145,50 +177,59 @@ fun TeacherRecord(group: Group) {
 
 @Composable
 fun studentCard(
+    student: Student,
     studentFio: String,
     studentPoints: String,
     maxPoints: String,
     studentStatus: Int,
+    onNavToCard: (student1: Student) -> Unit = {}
 ) {
     val studentFioWeight = FontWeight(600)
 
     val studentPointsWeight = FontWeight(600)
-    Row(modifier = Modifier.padding(bottom = 10.dp, start = 10.dp)) {
-        Column(Modifier.weight(0.2f)) {
-            //1 - Аттестован
-            //2 - Не аттестован
-            //3 - Бегунок
-            when (studentStatus) {
-                1 -> {
-                    Image(
-                        painterResource(id = R.drawable.check_mark),
-                        contentDescription = "",
-                        alignment = Alignment.Center,
-                        modifier = Modifier.padding(top = 5.dp)
-                        //alpha = 0.4f
-                    )
-                }
-                2 -> {
-                    Image(
-                        painterResource(id = R.drawable.warn),
-                        contentDescription = "",
-                        alignment = Alignment.Center,
-                        modifier = Modifier.padding(top = 5.dp)
-                        //alpha = 0.4f
-                    )
-                }
-                3 -> {
-                    Image(
-                        painterResource(id = R.drawable.runner),
-                        contentDescription = "",
-                        alignment = Alignment.Center,
-                        modifier = Modifier.padding(top = 5.dp)
-                        //alpha = 0.4f
-                    )
-                }
-            }
+    val cardModifierClickable =
+        if (studentStatus == 3) Modifier.clickable { onNavToCard(student) }
+        else Modifier
 
-        }
+    Row(
+        modifier = cardModifierClickable.padding(bottom = 10.dp, start = 10.dp)
+    ) {
+        var studentStatusTemp = studentStatus
+            Column(Modifier.weight(0.2f)) {
+                //1 - Аттестован
+                //2 - Не аттестован
+                //3 - Бегунок
+                when (studentStatus) {
+                    1 -> {
+                        Image(
+                            painterResource(id = R.drawable.check_mark),
+                            contentDescription = "",
+                            alignment = Alignment.Center,
+                            modifier = Modifier.padding(top = 5.dp)
+                            //alpha = 0.4f
+                        )
+                    }
+                    2 -> {
+                        Image(
+                            painterResource(id = R.drawable.warn),
+                            contentDescription = "",
+                            alignment = Alignment.Center,
+                            modifier = Modifier.padding(top = 5.dp)
+                            //alpha = 0.4f
+                        )
+                    }
+                    3 -> {
+                        Image(
+                            painterResource(id = R.drawable.runner),
+                            contentDescription = "",
+                            alignment = Alignment.Center,
+                            modifier = Modifier.padding(top = 5.dp)
+                            //alpha = 0.4f
+                        )
+                    }
+                }
+
+            }
         Column(Modifier.weight(0.5f)) {
             if (studentFio != null) Text(
                 text = studentFio,

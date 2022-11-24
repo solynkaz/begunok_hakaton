@@ -1,5 +1,6 @@
 package com.example.begunok_hakaton.screens.mainMenu
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -10,7 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.begunok_hakaton.R
 
 @Composable
@@ -31,16 +35,25 @@ fun mainMenu(onNavToStudent: () -> Unit = {}, onNavToTeacher: () -> Unit = {}) {
             alpha = 0.4f
         )
     }
-    Row(){
+    Column(Modifier.padding()) {
+        Spacer(Modifier.weight(2f))
         Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            border = BorderStroke((0.5).dp,Color(0xA6000000)),
+
             enabled = true,
             modifier = buttonModifier
                 .weight(1f)
-                .padding(start = 4.dp, end = 3.dp)
-                .fillMaxHeight(),
+                .padding(start = 3.dp, end = 5.dp)
+                .fillMaxWidth()
+                .weight(1f),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = Color.LightGray,
+                backgroundColor = Color(0xD9FFFFFF),
+                contentColor = Color.Black.copy(alpha = 0.8f),
             ),
             contentPadding = PaddingValues(0.dp),
             onClick = {
@@ -48,18 +61,25 @@ fun mainMenu(onNavToStudent: () -> Unit = {}, onNavToTeacher: () -> Unit = {}) {
             }
         ) {
             Text(
-                "Студент"
+                "Студент", fontSize = 25.sp, fontWeight = FontWeight(550)
             )
         }
         Button(
+            elevation = ButtonDefaults.elevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp,
+                disabledElevation = 0.dp
+            ),
+            border = BorderStroke((0.5).dp,Color(0xA6000000)),
             enabled = true,
             modifier = buttonModifier
                 .weight(1f)
-                .padding(start = 4.dp, end = 3.dp)
-                .fillMaxHeight(),
+                .padding(start = 3.dp, end = 5.dp)
+                .fillMaxWidth()
+                .weight(1f),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.White,
-                contentColor = Color.LightGray,
+                backgroundColor = Color(0xD9FFFFFF),
+                contentColor = Color.Black.copy(alpha = 0.8f),
             ),
             contentPadding = PaddingValues(0.dp),
             onClick = {
@@ -67,8 +87,9 @@ fun mainMenu(onNavToStudent: () -> Unit = {}, onNavToTeacher: () -> Unit = {}) {
             }
         ) {
             Text(
-                "Препод"
+                "Преподаватель", fontSize = 25.sp, fontWeight = FontWeight(550)
             )
         }
+        Spacer(Modifier.weight(2f))
     }
 }

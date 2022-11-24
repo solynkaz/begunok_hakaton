@@ -7,6 +7,8 @@ data class Arrear(
     val idLesson: Int,
     val arrearDate: String,
     val arrearGrade: String,
+    var arrearSended: Boolean,
+    val arrearAccepted: Boolean,
  /* val arrearId: Int,
     val lessonId: Int,
     val arrearType: String, //Индивидуальный протокол защиты курсовой работы / курсового проекта
