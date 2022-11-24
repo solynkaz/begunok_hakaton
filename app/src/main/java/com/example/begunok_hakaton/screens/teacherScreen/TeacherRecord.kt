@@ -1,5 +1,7 @@
 package com.example.begunok_hakaton.screens
 
+
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,8 +24,7 @@ import com.example.begunok_hakaton.dataclasses.GroupDataClasses.Group
 
 
 @Composable
-fun TeacherRecord(groups: ArrayList<Group>?) {
-
+fun TeacherRecord(group: Group) {
     Column() {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { }) {
@@ -106,9 +107,9 @@ fun TeacherRecord(groups: ArrayList<Group>?) {
                 )
             }
             Column(Modifier.weight(0.85f)) {
+                Log.d("TeacherRecord",group.toString())
                 Text(
-                    //text = groups!![0].groupName,
-                    text = "Б760",
+                    text = group.groupName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight(600),
                     modifier = Modifier.padding(top = 5.dp),
@@ -127,16 +128,7 @@ fun TeacherRecord(groups: ArrayList<Group>?) {
         }
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            /*for (student in groups!![0].students) {
-                item {
-                    studentCard(
-                        studentFio = "Фамилия Имя \nОтчество",
-                        studentPoints = "00.00",
-                        maxPoints = "72.00",
-                        studentStatus = (1..3).random()
-                    )
-                }
-            }*/
+            for (student in group.students) {
             for (i in 0..10) {
                 item {
                     studentCard(
