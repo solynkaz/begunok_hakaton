@@ -11,9 +11,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +29,11 @@ import com.google.gson.Gson
 
 
 @Composable
-fun TeacherRecord(group1: Group, onNavToCard: (student: Student) -> Unit, pref: SharedPreferences,
-NavOnBack: () -> Unit) {
-    val group: Group = Gson().fromJson(pref.getString("data",""), Group::class.java)
+fun TeacherRecord(
+    group1: Group, onNavToCard: (student: Student) -> Unit, pref: SharedPreferences,
+    NavOnBack: () -> Unit
+) {
+    val group: Group = Gson().fromJson(pref.getString("data", ""), Group::class.java)
     Row(
         Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.Center,
@@ -47,9 +49,12 @@ NavOnBack: () -> Unit) {
     Column() {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
             IconButton(onClick = { }) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "", modifier = Modifier.clickable {
-                    NavOnBack()
-                })
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "",
+                    modifier = Modifier.clickable {
+                        NavOnBack()
+                    })
             }
             Text("", fontSize = 22.sp)
         }
@@ -165,7 +170,7 @@ NavOnBack: () -> Unit) {
                         student = student,
                         studentFio = "${studentName[0]} ${studentName[1]}\n${studentName[2]}",
                         studentPoints = student.lessons[3].currentBall.toString(),
-                        maxPoints = "72.00",
+                        maxPoints = "72",
                         studentStatus = status,
                         onNavToCard = onNavToCard
                     )
@@ -195,41 +200,41 @@ fun studentCard(
         modifier = cardModifierClickable.padding(bottom = 10.dp, start = 10.dp)
     ) {
         var studentStatusTemp = studentStatus
-            Column(Modifier.weight(0.2f)) {
-                //1 - Аттестован
-                //2 - Не аттестован
-                //3 - Бегунок
-                when (studentStatus) {
-                    1 -> {
-                        Image(
-                            painterResource(id = R.drawable.check_mark),
-                            contentDescription = "",
-                            alignment = Alignment.Center,
-                            modifier = Modifier.padding(top = 5.dp)
-                            //alpha = 0.4f
-                        )
-                    }
-                    2 -> {
-                        Image(
-                            painterResource(id = R.drawable.warn),
-                            contentDescription = "",
-                            alignment = Alignment.Center,
-                            modifier = Modifier.padding(top = 5.dp)
-                            //alpha = 0.4f
-                        )
-                    }
-                    3 -> {
-                        Image(
-                            painterResource(id = R.drawable.runner),
-                            contentDescription = "",
-                            alignment = Alignment.Center,
-                            modifier = Modifier.padding(top = 5.dp)
-                            //alpha = 0.4f
-                        )
-                    }
+        Column(Modifier.weight(0.2f)) {
+            //1 - Аттестован
+            //2 - Не аттестован
+            //3 - Бегунок
+            when (studentStatus) {
+                1 -> {
+                    Image(
+                        painterResource(id = R.drawable.check_mark),
+                        contentDescription = "",
+                        alignment = Alignment.Center,
+                        modifier = Modifier.padding(top = 5.dp)
+                        //alpha = 0.4f
+                    )
                 }
-
+                2 -> {
+                    Image(
+                        painterResource(id = R.drawable.warn),
+                        contentDescription = "",
+                        alignment = Alignment.Center,
+                        modifier = Modifier.padding(top = 5.dp)
+                        //alpha = 0.4f
+                    )
+                }
+                3 -> {
+                    Image(
+                        painterResource(id = R.drawable.runner),
+                        contentDescription = "",
+                        alignment = Alignment.Center,
+                        modifier = Modifier.padding(top = 5.dp)
+                        //alpha = 0.4f
+                    )
+                }
             }
+
+        }
         Column(Modifier.weight(0.5f)) {
             if (studentFio != null) Text(
                 text = studentFio,
@@ -270,21 +275,30 @@ fun studentCard(
                 .weight(0.3f)
                 .align(CenterVertically)
         ) {
-            if (studentPoints != null) Text(
-                text = "$studentPoints/$maxPoints",
-                fontSize = 18.sp,
-                fontWeight = studentPointsWeight,
-                // modifier = studentPointsModifier,
-                textAlign = TextAlign.Center
-            )
-            else Text("00.00")
-            Text(
-                text = "Баллы итог.",
-                textAlign = TextAlign.Right,
-                fontSize = 14.sp,
-                color = Color(0xFF728394),
-                fontWeight = FontWeight(600)
-            )
+            if (studentPoints != null) {
+                Box(Modifier.fillMaxWidth().padding(end = 20.dp)) {
+                    Text(
+                        modifier = Modifier.align(CenterEnd),
+                        text = "$studentPoints/$maxPoints",
+                        fontSize = 18.sp,
+                        fontWeight = studentPointsWeight,
+                        // modifier = studentPointsModifier,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else Box(Modifier.fillMaxWidth()) {
+                Text("00", Modifier.align(CenterEnd))
+            }
+            Box(Modifier.fillMaxWidth().padding(end = 20.dp)) {
+                Text(
+                    text = "Баллы итог.",
+                    textAlign = TextAlign.Right,
+                    fontSize = 14.sp,
+                    color = Color(0xFF728394),
+                    fontWeight = FontWeight(600),
+                    modifier = Modifier.align(CenterEnd)
+                )
+            }
         }
     }
 }

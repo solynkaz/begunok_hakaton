@@ -11,14 +11,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.begunok_hakaton.R
+import java.util.*
+
+
 
 @Composable
 fun mainMenu(onNavToStudent: () -> Unit = {}, onNavToTeacher: () -> Unit = {}) {
+
     val buttonModifier = Modifier
         .fillMaxWidth()
         .height(58.dp)
@@ -36,14 +39,14 @@ fun mainMenu(onNavToStudent: () -> Unit = {}, onNavToTeacher: () -> Unit = {}) {
         )
     }
     Column(Modifier.padding()) {
-        Spacer(Modifier.weight(2f))
+        Spacer(Modifier.weight(3f))
         Button(
             elevation = ButtonDefaults.elevation(
                 defaultElevation = 0.dp,
                 pressedElevation = 0.dp,
                 disabledElevation = 0.dp
             ),
-            border = BorderStroke((0.5).dp,Color(0xA6000000)),
+            border = BorderStroke((0.5).dp, Color(0xA6000000)),
 
             enabled = true,
             modifier = buttonModifier
@@ -90,6 +93,6 @@ fun mainMenu(onNavToStudent: () -> Unit = {}, onNavToTeacher: () -> Unit = {}) {
                 "Преподаватель", fontSize = 25.sp, fontWeight = FontWeight(550)
             )
         }
-        Spacer(Modifier.weight(2f))
+        Spacer(Modifier.weight(3f))
     }
 }
