@@ -41,7 +41,8 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 //AcademicRecord()
-                TeacherRecord()
+                //TeacherRecord()
+                RunnerScreen()
             }
         }
     }
