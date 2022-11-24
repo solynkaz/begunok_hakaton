@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.begunok_hakaton.Screens.MainMenu.mainMenu
 import com.example.begunok_hakaton.Screens.StudentRecord
+import com.example.begunok_hakaton.Screens.TeacherRecord
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
@@ -39,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     StudentRecord(lessonName = "Программирование", yearOfStudy = "2022")
                 }
                 composable("teacherRecords") {
-
+                    TeacherRecord()
                 }
             }
                 //#region picture
@@ -56,8 +57,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 //endregion
-
-
                 //val json = "{\"id\":\"1\",\"fio\":\"MaerkoLika\",\"lessons\":[{\"id\":\"1\",\"name\":\"Программирование\",\"date\":\"2022-10-10\",\"theme\":\"Множества\",\"teacher\":\"ЖамбаловЭ.Б.\",\"presence\":\"true\",\"type\":\"1\",\"maxBall\":\"14\",\"currentBall\":\"0\"}],\"active_arrears\":[{\"arrearDate\":\"2022-01-01\",\"arrearGrade\":\"5\"}]}"
                 //val student: Student = Gson().fromJson(json, Student::class.java)
                 //Log.d("StudentInfo", student.toString())
