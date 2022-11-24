@@ -1,7 +1,7 @@
 package com.example.begunok_hakaton.database
 
 import androidx.room.Query
-import com.example.begunok_hakaton.dataclasses.Lesson
+import com.example.begunok_hakaton.dataclasses.StudentDataClasses.Lesson
 
 interface StudentDAO {
     @Query("SELECT lesson_list FROM Student")

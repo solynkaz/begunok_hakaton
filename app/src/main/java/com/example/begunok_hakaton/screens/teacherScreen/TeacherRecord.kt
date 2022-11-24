@@ -1,4 +1,4 @@
-package com.example.begunok_hakaton.Screens
+package com.example.begunok_hakaton.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,10 +14,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.begunok_hakaton.dataclasses.GroupDataClasses.Group
 
 
 @Composable
-fun TeacherRecord() {
+fun TeacherRecord(groups: ArrayList<Group>) {
 
     Column() {
         TopAppBar(backgroundColor = Color.Transparent, elevation = 0.dp) {
@@ -93,27 +94,28 @@ fun TeacherRecord() {
             }
             Column(Modifier.weight(0.85f)) {
                 Text(
-                    text = "Группа Б760",
+                    text = groups[0].groupName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight(600),
                     color = Color(0xFF000000),
                 )
-                Text(
+                /*Text(
                     text = "подгруппа 1",
                     fontSize = 14.sp,
                     fontWeight = FontWeight(600),
                     color = Color(0xFF728394),
                 )
+                 */
             }
 
 
         }
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            for (i in 0..10) {
+            for (student in groups[0].students) {
                 item {
                     studentCard(
-                        studentFio = "Фамилия Имя \nОтчество $i",
+                        studentFio = "Фамилия Имя \nОтчество",
                         studentPoints = "00.00",
                         maxPoints = "72.00",
                         studentStatus = (1..3).random()

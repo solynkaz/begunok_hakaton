@@ -1,12 +1,10 @@
 package com.example.begunok_hakaton
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,9 +12,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.begunok_hakaton.Screens.MainMenu.mainMenu
-import com.example.begunok_hakaton.Screens.StudentRecord
-import com.example.begunok_hakaton.Screens.TeacherRecord
+import com.example.begunok_hakaton.screens.mainMenu.mainMenu
+import com.example.begunok_hakaton.screens.StudentRecord
+import com.example.begunok_hakaton.screens.TeacherRecord
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {

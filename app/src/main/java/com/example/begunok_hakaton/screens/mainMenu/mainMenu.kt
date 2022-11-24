@@ -1,4 +1,4 @@
-package com.example.begunok_hakaton.Screens.MainMenu
+package com.example.begunok_hakaton.screens.mainMenu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

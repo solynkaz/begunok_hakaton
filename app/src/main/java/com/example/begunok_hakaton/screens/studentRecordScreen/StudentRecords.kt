@@ -1,4 +1,4 @@
-package com.example.begunok_hakaton.Screens
+package com.example.begunok_hakaton.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

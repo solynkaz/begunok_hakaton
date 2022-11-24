@@ -1,4 +1,4 @@
-package com.example.begunok_hakaton.dataclasses
+package com.example.begunok_hakaton.dataclasses.StudentDataClasses
 
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
