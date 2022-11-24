@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     StudentRecord(lessonName = "Программирование", yearOfStudy = "2022")
                 }
                 composable("teacherRecords") {
-                    TeacherRecord()
+                    TeacherRecord(null)
                 }
             }
                 //#region picture
